@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <!-- Window action -->
+    <record id="action_college_erp" model="ir.actions.act_window">
+        <field name="name">College ERP</field>
+        <field name="res_model">college.student</field>
+        <field name="view_mode">list,form,kanban</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">Create your first Student</p>
+        </field>
+    </record>
+</odoo>

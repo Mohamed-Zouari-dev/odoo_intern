@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+
+    <record id="view_move_form_inherit" model="ir.ui.view">
+        <field name="name">account.move.form.inherit</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_move_form"/>
+        <field name="arch" type="xml">
+            <!-- Add Code NDP and Tax to the list view when you add products in the bill-->
+            <xpath expr="//field[@name='product_id']" position="after">
+                <field name="code_ndp" string="Code NDP"/>
+                <field name="tax" string="Taxe (%)" options="{'no_open': True}"/>
+            </xpath>
+
+            <!-- Remove tax_ids because we added custom taxations compatible with Douane -->
+            <xpath expr="//field[@name='tax_ids']" position="replace"/>
+
+            <!-- Added "information douaniere" with code_ndp and tax values inside -->
+            <xpath expr="//notebook" position="inside">
+                <page string="Informations douanière" name="douane_section">
+                    <field name="invoice_line_ids"
+                           context="{'tree_view_ref': 'view_move_line_douane_tree'}"/>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Special tree view for douane information -->
+    <record id="view_move_line_douane_tree" model="ir.ui.view">
+        <field name="name">account.move.line.douane.tree</field>
+        <field name="model">account.move.line</field>
+        <field name="inherit_id" ref="account.view_move_line_tree"/>
+        <field name="arch" type="xml">
+            <!-- Remove unwanted fields -->
+            <xpath expr="//field[@name='date']" position="replace"/>
+            <xpath expr="//field[@name='move_name']" position="replace"/>
+            <xpath expr="//field[@name='partner_id']" position="replace"/>
+            <xpath expr="//field[@name='debit']" position="replace"/>
+            <xpath expr="//field[@name='credit']" position="replace"/>
+            <xpath expr="//field[@name='matching_number']" position="replace"/>
+            <xpath expr="//field[@name='tax_ids']" position="replace"/>
+            <xpath expr="//field[@name='name']" position="replace"/>
+            <xpath expr="//field[@name='account_id']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+
+            <!-- Add our custom fields -->
+            <xpath expr="//field[@name='product_id']" position="after">
+                <field name="tax" string="Taxe (%)" options="{'no_open': True}"/>
+                <field name="montant" string="Montant Total" readonly="1"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Original inherited tree view for invoice lines -->
+    <record id="view_move_line_tree_inherit" model="ir.ui.view">
+        <field name="name">account.move.line.tree.inherit</field>
+        <field name="model">account.move.line</field>
+        <field name="inherit_id" ref="account.view_move_line_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='account_id']" position="after">
+                <field name="code_ndp" string="Code NDP"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Action -->
+    <record id="action_final" model="ir.actions.act_window">
+        <field name="name">Facture</field>
+        <field name="res_model">account.move</field>
+        <field name="view_mode">form</field>
+    </record>
+
+    <!-- menu -->
+    <menuitem id="ics_facture_menu" name="Facture" action="action_final" sequence="10"
+              parent="menu_ics_interventions_root"/>
+</odoo>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+
+<!-- Not necessary for the internship -->
+<!-- Not necessary for the internship -->
+<!-- Not necessary for the internship -->
+<!-- Not necessary for the internship -->
+<!-- Not necessary for the internship -->
+
+
+
+
+
+
+
+
+
+
+
+
+<odoo>
+    <!-- Main Menu -->
+    <menuitem id="menu_ics_interventions_root" name="ICS Interventions" sequence="1"/>
+
+    <menuitem id="ics_douane_menu" name="Produit" action="product_action" sequence="5" parent="menu_ics_interventions_root" />
+    <menuitem id="ics_product_list_menu" name="Liste des produits" action="list_action" parent="ics_douane_menu"/>
+    <menuitem id="menu_ics_invoice" name="Facturation" sequence="2" parent="menu_ics_interventions_root"
+              />
+
+
+</odoo>
