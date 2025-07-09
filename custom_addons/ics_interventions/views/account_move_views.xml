@@ -26,13 +26,13 @@
         </field>
     </record>
 
-    <!-- Special tree view for douane information -->
+    <!-- tree view for 'douane information' -->
     <record id="view_move_line_douane_tree" model="ir.ui.view">
         <field name="name">account.move.line.douane.tree</field>
         <field name="model">account.move.line</field>
         <field name="inherit_id" ref="account.view_move_line_tree"/>
         <field name="arch" type="xml">
-            <!-- Remove unwanted fields -->
+            <!-- unwanted fields -->
             <xpath expr="//field[@name='date']" position="replace"/>
             <xpath expr="//field[@name='move_name']" position="replace"/>
             <xpath expr="//field[@name='partner_id']" position="replace"/>
@@ -45,7 +45,7 @@
                 <attribute name="invisible">1</attribute>
             </xpath>
 
-            <!-- Add our custom fields -->
+            <!-- custom fields -->
             <xpath expr="//field[@name='product_id']" position="after">
                 <field name="tax" string="Taxe (%)" options="{'no_open': True}"/>
                 <field name="montant" string="Montant Total" readonly="1"/>
@@ -53,7 +53,7 @@
         </field>
     </record>
 
-    <!-- Original inherited tree view for invoice lines -->
+    <!-- tree view (inherited) -->
     <record id="view_move_line_tree_inherit" model="ir.ui.view">
         <field name="name">account.move.line.tree.inherit</field>
         <field name="model">account.move.line</field>
@@ -73,6 +73,8 @@
     </record>
 
     <!-- menu -->
+    <menuitem id="menu_ics_interventions_root" name="intervention" action="action_final" sequence="10"
+              />
     <menuitem id="ics_facture_menu" name="Facture" action="action_final" sequence="10"
               parent="menu_ics_interventions_root"/>
 </odoo>

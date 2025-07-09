@@ -1,31 +1,59 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-
-
-<!-- Not necessary for the internship -->
-<!-- Not necessary for the internship -->
-<!-- Not necessary for the internship -->
-<!-- Not necessary for the internship -->
-<!-- Not necessary for the internship -->
-
-
-
-
-
-
-
-
-
-
-
-
 <odoo>
-    <!-- Main Menu -->
-    <menuitem id="menu_ics_interventions_root" name="ICS Interventions" sequence="1"/>
+    <record id="view_intervention_tree" model="ir.ui.view">
+        <field name="name">ics.intervention.tree</field>
+        <field name="model">ics.intervention</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="partner_id"/>
+                <field name="type"/>
+                <field name="date_planned"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
 
-    <menuitem id="ics_douane_menu" name="Produit" action="product_action" sequence="5" parent="menu_ics_interventions_root" />
-    <menuitem id="ics_product_list_menu" name="Liste des produits" action="list_action" parent="ics_douane_menu"/>
-    <menuitem id="menu_ics_invoice" name="Facturation" sequence="2" parent="menu_ics_interventions_root"
-              />
+    <record id="view_intervention_form" model="ir.ui.view">
+        <field name="name">ics.intervention.form</field>
+        <field name="model">ics.intervention</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_start" string="Démarrer" type="object"
+                        class="oe_highlight" states="draft"/>
+                    <button name="action_done" string="Terminer" type="object"
+                        class="oe_highlight" states="in_progress"/>
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="partner_id"/>
+                        <field name="type"/>
+                    </group>
+                    <group>
+                        <field name="date_planned"/>
+                        <field name="duration"/>
+                        <field name="employee_id"/>
+                    </group>
+                    <notebook>
+                        <page string="Rapport">
+                            <field name="report"/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
 
+    <menuitem id="menu_intervention_root" name="Interventions"/>
+    <menuitem id="menu_intervention" name="Toutes les interventions"
+        parent="menu_intervention_root" action="action_intervention"/>
 
+    <record id="action_intervention" model="ir.actions.act_window">
+        <field name="name">Interventions</field>
+        <field name="res_model">ics.intervention</field>
+        <field name="view_mode">tree,form</field>
+    </record>
 </odoo>
