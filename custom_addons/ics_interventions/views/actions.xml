@@ -8,21 +8,19 @@
     <!-- Not necessary for the internship -->
     <!-- Not necessary for the internship -->
 
-
-
-
-
-
-
-
-
+       <record id="action_intervention" model="ir.actions.act_window">
+        <field name="name">Interventions</field>
+        <field name="res_model">ics.intervention</field>
+        <field name="view_mode">kanban,tree,form</field>
+        <field name="view_id" ref="view_intervention_kanban"/>
+        <field name="context">{"search_default_group_by_state": 1}</field>
+    </record>
     <!-- douane action -->
     <record id="product_action" model="ir.actions.act_window">
         <field name="name">Products</field>
         <field name="res_model">product.template</field>
         <field name="view_mode">form</field>
     </record>
-
 
 
     <!-- facture list action -->
@@ -32,6 +30,14 @@
         <field name="view_mode">list,form</field>
     </record>
 
+
+    <!-- account move views action -->
+
+    <record id="action_final" model="ir.actions.act_window">
+        <field name="name">Facture Final</field>
+        <field name="res_model">account.move</field>
+        <field name="view_mode">form</field>
+    </record>
 
 
     <!-- liste des produits action -->

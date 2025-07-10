@@ -65,16 +65,5 @@
         </field>
     </record>
 
-    <!-- Action -->
-    <record id="action_final" model="ir.actions.act_window">
-        <field name="name">Facture</field>
-        <field name="res_model">account.move</field>
-        <field name="view_mode">form</field>
-    </record>
 
-    <!-- menu -->
-    <menuitem id="menu_ics_interventions_root" name="intervention" action="action_final" sequence="10"
-              />
-    <menuitem id="ics_facture_menu" name="Facture" action="action_final" sequence="10"
-              parent="menu_ics_interventions_root"/>
 </odoo>

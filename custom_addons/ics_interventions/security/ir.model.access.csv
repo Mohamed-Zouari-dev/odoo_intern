@@ -1,3 +1,2 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_ics_employe,access.ics.employe,model_ics_employe,,1,1,1,1
-
+access_ics_intervention,ics.intervention,model_ics_intervention,base.group_user,1,1,1,1
