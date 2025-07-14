@@ -11,12 +11,14 @@
         'sale',
         'product'],
     'data': [
+        'data/intervention_data.xml',
         'security/ir.model.access.csv',
-        'views/actions.xml',
-        'views/menu.xml',
-        'views/ics_interventions_view.xml',
+        'report/report_intervention.xml',
         'views/product_views.xml',
-        'views/account_move_views.xml'
+        # 'views/account_move_views.xml',
+        'views/ics_interventions_view.xml',
+        'views/actions.xml',
+        'views/menus.xml',
 
     ],
     'application': True,

@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="type_network" model="ics.intervention.type">
+        <field name="name">Réseau</field>
+    </record>
+    <record id="type_software" model="ics.intervention.type">
+        <field name="name">Logiciel</field>
+    </record>
+    <record id="type_training" model="ics.intervention.type">
+        <field name="name">Formation</field>
+    </record>
+</odoo>

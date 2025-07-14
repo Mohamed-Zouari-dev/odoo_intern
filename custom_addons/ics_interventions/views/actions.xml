@@ -8,13 +8,6 @@
     <!-- Not necessary for the internship -->
     <!-- Not necessary for the internship -->
 
-       <record id="action_intervention" model="ir.actions.act_window">
-        <field name="name">Interventions</field>
-        <field name="res_model">ics.intervention</field>
-        <field name="view_mode">kanban,tree,form</field>
-        <field name="view_id" ref="view_intervention_kanban"/>
-        <field name="context">{"search_default_group_by_state": 1}</field>
-    </record>
     <!-- douane action -->
     <record id="product_action" model="ir.actions.act_window">
         <field name="name">Products</field>
@@ -47,4 +40,13 @@
         <field name="res_model">product.template</field>
         <field name="view_mode">kanban</field>
     </record>
+
+
+    <!-- contact -->
+    <record id="contact_action" model="ir.actions.act_window">
+        <field name="name">Contacts</field>
+        <field name="res_model">res.partner</field>
+        <field name="view_mode">kanban</field>
+    </record>
+
 </odoo>

@@ -1,72 +1,138 @@
-<?xml version="1.0"?>
 <odoo>
     <!-- Kanban View -->
     <record id="view_intervention_kanban" model="ir.ui.view">
         <field name="name">ics.intervention.kanban</field>
         <field name="model">ics.intervention</field>
         <field name="arch" type="xml">
-            <kanban default_group_by="state">
-                <field name="state"/>
+            <kanban default_group_by="state" class="o_kanban_small_column">
+                <field name="state" group_expand="group_expand_state"/>
                 <templates>
                     <t t-name="kanban-box">
-                        <div class="oe_kanban_global_click">
-                            <div class="o_kanban_record_title">
-                                <field name="ref"/>
+                        <div class="oe_kanban_global_click o_kanban_record" style="position: relative;">
+                            <div class="oe_kanban_content">
+                                <div class="o_kanban_record_title">
+                                    <field name="ref"/>
+                                </div>
+                                <div class="text-muted">
+                                    <field name="partner_id"/>
+                                </div>
+                                <div>
+                                    <span class="fa fa-calendar mr-2"/>
+                                    <field name="date_planned" string="Date prévue"/>
+                                </div>
+                                <div t-if="record.type_id.raw_value" class="mt-2">
+                                    <span class="badge bg-info">
+                                        <field name="type_id"/>
+                                    </span>
+                                </div>
+
+                                <!-- Buttons -->
+                                <div class="mt-3">
+                                    <t t-if="record.state.raw_value == 'draft'">
+                                        <button name="action_start" type="object" class="btn btn-primary btn-sm">
+                                            Démarrer intervention
+                                        </button>
+                                    </t>
+                                    <t t-elif="record.state.raw_value == 'in_progress'">
+                                        <button name="action_done" type="object" class="btn btn-success btn-sm">
+                                            Terminer intervention
+                                        </button>
+                                    </t>
+                                </div>
                             </div>
-                            <div>
-                                <field name="partner_id"/>
-                            </div>
-                            <div>
-                                Planned: <field name="date_planned"/>
-                            </div>
-                            <div t-if="record.type.raw_value" class="text-muted">
-                                <field name="type"/>
-                            </div>
+
+                            <!-- Trash can delete button top right -->
+                            <t t-if="record.state.raw_value == 'done'">
+                                <button
+                                        name="unlink"
+                                        type="object"
+                                        class="btn btn-light btn-sm"
+                                        title="Supprimer cette intervention"
+                                        style="
+                                            position: absolute;
+                                            top: 5px;
+                                            right: 5px;
+                                            padding: 0;
+                                            width: 24px;
+                                            height: 24px;
+                                            border-radius: 50%;
+                                            display: flex;
+                                            align-items: center;
+                                            justify-content: center;
+                                            color: #666;
+                                            border: 1px solid #ccc;
+                                            background-color: #f5f5f5;
+                                        ">
+                                    <i class="fa fa-trash" aria-hidden="true" style="font-size: 14px;"/>
+                                </button>
+                            </t>
                         </div>
                     </t>
                 </templates>
             </kanban>
+
         </field>
     </record>
 
-    <!-- List View (simplified) -->
+    <!-- List View -->
     <record id="view_intervention_tree" model="ir.ui.view">
         <field name="name">ics.intervention.tree</field>
         <field name="model">ics.intervention</field>
         <field name="arch" type="xml">
-            <tree>
-                <field name="ref"/>
+            <list>
+                <field name="ref" string="Reference"/>
                 <field name="partner_id"/>
-                <field name="type"/>
+                <field name="type_id"/>
                 <field name="date_planned"/>
-                <field name="state" widget="statusbar"/>
-            </tree>
+                <field name="state"/>
+            </list>
         </field>
     </record>
 
-    <!-- Form View (unchanged) -->
+    <!-- Form View -->
     <record id="view_intervention_form" model="ir.ui.view">
         <field name="name">ics.intervention.form</field>
         <field name="model">ics.intervention</field>
         <field name="arch" type="xml">
             <form>
+                <header>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,in_progress,done" clickable="1"/>
+
+                    <!-- bouton print -->
+                    <button name="%(report_ics_intervention)d"
+                            string="Imprimer rapport"
+                            type="action"
+                            class="btn btn-primary"/>
+                </header>
                 <sheet>
                     <group>
-                        <field name="ref"/>
+                        <field name="ref" placeholder="Généré automatiquement à la création" readonly="1"/>
                         <field name="partner_id"/>
-                        <field name="type"/>
+                        <field name="type_id"/>
                     </group>
                     <group>
                         <field name="date_planned"/>
                         <field name="duration"/>
                         <field name="employee_id"/>
-                        <field name="state" widget="statusbar"/>
                     </group>
+
+                    <!-- Description: visible only if state == 'done' -->
+                    <group>
+                        <field name="description" modifiers="{'invisible': [['state', '!=', 'done']]}"/>
+                    </group>
+
                 </sheet>
             </form>
         </field>
     </record>
 
-    <!-- Update Action to Show Kanban First -->
 
+    <!-- Action -->
+    <record id="action_intervention" model="ir.actions.act_window">
+        <field name="name">Interventions</field>
+        <field name="res_model">ics.intervention</field>
+        <field name="view_mode">kanban,list,form</field>
+        <field name="view_id" ref="view_intervention_kanban"/>
+        <field name="context">{"search_default_group_by_state": 1}</field>
+    </record>
 </odoo>
