@@ -34,32 +34,32 @@ class Intervention(models.Model):
                 defaults['type_id'] = default_type.id
         return defaults
 
-    @api.model
+    @api.model_create_multi
     def create(self, vals):
         if vals.get('ref', 'Nouveau') == 'Nouveau':
             partner_name = ''
             employee_name = ''
             date_str = ''
 
-            # Get partner name
+            # partner name
             if 'partner_id' in vals and vals['partner_id']:
                 partner = self.env['res.partner'].browse(vals['partner_id'])
                 partner_name = partner.name or ''
 
-            # Get employee name
+            # employee name
             if 'employee_id' in vals and vals['employee_id']:
                 employee = self.env['hr.employee'].browse(vals['employee_id'])
                 employee_name = employee.name or ''
 
-            # Format date planned
+            # date planned
             if 'date_planned' in vals and vals['date_planned']:
                 try:
                     dt = fields.Datetime.from_string(vals['date_planned'])
-                    date_str = dt.strftime('%Y-%m-%d')
+                    date_str = dt.strftime('%d-%m-%Y')
                 except Exception:
                     date_str = ''
 
-            # Compose ref string
+            # ref string
             ref_parts = [partner_name, employee_name, date_str]
             ref_parts = [p for p in ref_parts if p]  # remove empty parts
             ref = ' - '.join(ref_parts)
@@ -70,9 +70,7 @@ class Intervention(models.Model):
         return super().create(vals)
 
     def unlink(self):
-        for record in self:
-            if record.state != 'done':
-                raise UserError("Vous ne pouvez supprimer que les interventions terminées.")
+
         return super().unlink()
 
     def group_expand_state(self, states, domain, order):

@@ -9,7 +9,8 @@
         'account',
         'base',
         'sale',
-        'product'],
+        'product']
+    ,
     'data': [
         'data/intervention_data.xml',
         'security/ir.model.access.csv',
