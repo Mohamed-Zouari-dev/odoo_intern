@@ -125,13 +125,26 @@
             </form>
         </field>
     </record>
+    <!-- Calendar View -->
+    <record id="view_intervention_calendar" model="ir.ui.view">
+        <field name="name">ics.intervention.calendar</field>
+        <field name="model">ics.intervention</field>
+        <field name="arch" type="xml">
+            <calendar string="Calendrier des interventions"
+                      date_start="date_planned"
+                      date_stop="date_deadline"
+                      color="employee_id">
+                <field name="ref"/>
+            </calendar>
+        </field>
+    </record>
 
 
     <!-- Action -->
     <record id="action_intervention" model="ir.actions.act_window">
         <field name="name">Interventions</field>
         <field name="res_model">ics.intervention</field>
-        <field name="view_mode">kanban,list,form</field>
+        <field name="view_mode">kanban,list,form,calendar</field>
         <field name="view_id" ref="view_intervention_kanban"/>
         <field name="context">{"search_default_group_by_state": 1}</field>
     </record>

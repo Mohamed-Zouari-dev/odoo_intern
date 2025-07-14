@@ -1,5 +1,5 @@
 from odoo import models, fields, api
-from odoo.exceptions import UserError
+from datetime import timedelta
 
 class Intervention(models.Model):
     _name = 'ics.intervention'
@@ -25,6 +25,15 @@ class Intervention(models.Model):
     def action_done(self):
         self.write({'state': 'done'})
 
+    date_deadline = fields.Datetime('Date de fin prévue', compute='_compute_date_deadline', store=True)
+
+    @api.depends('date_planned', 'duration')
+    def _compute_date_deadline(self):
+        for rec in self:
+            if rec.date_planned and rec.duration:
+                rec.date_deadline = rec.date_planned + timedelta(hours=rec.duration)
+            else:
+                rec.date_deadline = rec.date_planned
     @api.model
     def default_get(self, fields_list):
         defaults = super().default_get(fields_list)
@@ -35,40 +44,32 @@ class Intervention(models.Model):
         return defaults
 
     @api.model_create_multi
-    def create(self, vals):
-        if vals.get('ref', 'Nouveau') == 'Nouveau':
-            partner_name = ''
-            employee_name = ''
-            date_str = ''
+    def create(self, vals_list):
+        for vals in vals_list:
+            if vals.get('ref', 'Nouveau') == 'Nouveau':
+                partner_name = ''
+                employee_name = ''
+                date_str = ''
 
-            # partner name
-            if 'partner_id' in vals and vals['partner_id']:
-                partner = self.env['res.partner'].browse(vals['partner_id'])
-                partner_name = partner.name or ''
+                if 'partner_id' in vals:
+                    partner = self.env['res.partner'].browse(vals['partner_id'])
+                    partner_name = partner.name or ''
 
-            # employee name
-            if 'employee_id' in vals and vals['employee_id']:
-                employee = self.env['hr.employee'].browse(vals['employee_id'])
-                employee_name = employee.name or ''
+                if 'employee_id' in vals:
+                    employee = self.env['hr.employee'].browse(vals['employee_id'])
+                    employee_name = employee.name or ''
 
-            # date planned
-            if 'date_planned' in vals and vals['date_planned']:
-                try:
-                    dt = fields.Datetime.from_string(vals['date_planned'])
-                    date_str = dt.strftime('%d-%m-%Y')
-                except Exception:
-                    date_str = ''
+                if 'date_planned' in vals:
+                    try:
+                        dt = fields.Datetime.from_string(vals['date_planned'])
+                        date_str = dt.strftime('%d-%m-%Y')
+                    except Exception:
+                        date_str = ''
 
-            # ref string
-            ref_parts = [partner_name, employee_name, date_str]
-            ref_parts = [p for p in ref_parts if p]  # remove empty parts
-            ref = ' - '.join(ref_parts)
+                ref_parts = [partner_name, employee_name, date_str]
+                vals['ref'] = ' - '.join(p for p in ref_parts if p) or 'Nouveau'
 
-            # If empty ref fallback to default 'Nouveau'
-            vals['ref'] = ref or 'Nouveau'
-
-        return super().create(vals)
-
+        return super().create(vals_list)
     def unlink(self):
 
         return super().unlink()
