@@ -11,16 +11,7 @@
               action="action_intervention"
               sequence="10"/>
 
-
     <menuitem id="menu_contact" name="Contacts" parent="menu_ics_root" sequence="30" action="contacts.action_contacts"/>
     <menuitem id="menu_employe" name="Employés" parent="menu_ics_root" sequence="30" action="hr.open_view_employee_list_my"/>
-    <!--
-                                 Factures Section (parallel to Interventions)
-        <menuitem id="menu_factures_root" name="Factures" parent="menu_ics_root" sequence="30"/>
-                                        Action-linked submenu
-        <menuitem id="menu_custom_invoices" name="Factures Douanières"
-                  parent="menu_factures_root"
-                  action="action_final"
-                  sequence="10"/>
-                                    -->
+
 </odoo> 
