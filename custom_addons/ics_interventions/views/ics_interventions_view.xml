@@ -1,4 +1,6 @@
 <odoo>
+
+    <!-- reminder bech narja3 l deepseek -->
     <!-- Kanban View -->
     <record id="view_intervention_kanban" model="ir.ui.view">
         <field name="name">ics.intervention.kanban</field>
@@ -103,6 +105,11 @@
                             string="Imprimer rapport"
                             type="action"
                             class="btn btn-primary"/>
+                    <button name="action_create_invoice"
+                            string="Générer Facture"
+                            type="object"
+                            class="btn-secondary"
+                            />
                 </header>
                 <sheet>
                     <group>
@@ -112,7 +119,7 @@
                     </group>
                     <group>
                         <field name="date_planned"/>
-                        <field name="duration"/>
+                        <field name="duree"/>
                         <field name="employee_id"/>
                     </group>
 
