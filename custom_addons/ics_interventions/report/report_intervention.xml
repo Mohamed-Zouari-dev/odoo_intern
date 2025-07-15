@@ -80,6 +80,6 @@
         <field name="report_name">ics_interventions.report_intervention_template</field>
         <field name="paperformat_id" ref="ics_interventions.paperformat_custom"/>
         <field name="binding_model_id" ref="model_ics_intervention"/>
-        <field name="binding_view_types">form</field>
+        <field name="binding_view_types">list,form</field>
     </record>
 </odoo>
