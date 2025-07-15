@@ -14,6 +14,7 @@
                                 <th>Date Declared</th>
                                 <th>Date Fixed</th>
                                 <th>Description</th>
+                                <th>Statut</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -31,6 +32,7 @@
                                             <i>Pas de description</i>
                                         </t>
                                     </td>
+                                    <td><span t-field="doc.state"/></td>
                                 </tr>
                             </t>
                         </tbody>
